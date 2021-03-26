@@ -1,11 +1,12 @@
 #File =provider.tf
-#terraform {
-#   azurerm = {
-#      source  = "hashicorp/azurerm"
-#     version = "=2.46.0"
-#    }
-#  }
-#}
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+#      version = "2.46.0"
+    }
+  }
+}
 
 provider "azurerm" {
   subscription_id = "${var.subscriptionId}"  
