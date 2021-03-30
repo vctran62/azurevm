@@ -1,22 +1,31 @@
 #File =var.tf
 variable "prefix" {
   description = "The prefix which should be used for all resources in this example"
+  default     = "mytesttf"
 }
 
 variable "region" {
   description = "The Azure Region in which all resources in this example should be created"
+   default     = "uksouth"
+}
+
+
+variable "resourceGroup" {
+  description = "The Azure Region in which all resources in this example should be created"
+   default     = "myrgtestman"
 }
 
 
 variable "subscriptionId" {}
 variable "clientId" {}
 variable "clientSecret" {}
-variable "resourceGroup" {}
 variable "tenantId" {}
+
 variable "vmSize" {
   description = "Specifies the size of the virtual machine."
-  default     = "Standard_D2_v2"
+  default     = "Standard_D1_v2"
 }
+
 variable "admin_username" {
   description = "administrator user name"
   default     = "vmadmin"
@@ -57,3 +66,6 @@ variable "hostname" {
   description = "VM name referenced also in storage-related names."
   default="tf"
 }
+
+
+

@@ -1,27 +1,23 @@
 #File =template.tf
-resource "azurerm_resource_group" "main" {
-  name     = "${var.resourceGroup}"
-  location = "${var.region}"
-}
 
 resource "azurerm_virtual_network" "main" {
   name                = "${var.prefix}-network"
   address_space       = ["${var.address_space}"]
-  location            = "${azurerm_resource_group.main.location}"
-  resource_group_name = "${azurerm_resource_group.main.name}"
+  location            = "${var.region}"
+  resource_group_name = "${var.resourceGroup}"
 }
 
 resource "azurerm_subnet" "internal" {
   name                 = "${var.prefix}-subnet"
-  resource_group_name  = "${azurerm_resource_group.main.name}"
+  resource_group_name  = "${var.resourceGroup}"
   virtual_network_name = "${azurerm_virtual_network.main.name}"
   address_prefix       = "${var.subnet_prefix}"
 }
 
 resource "azurerm_network_interface" "main" {
   name                = "${var.prefix}-nic"
-  location            = "${azurerm_resource_group.main.location}"
-  resource_group_name = "${azurerm_resource_group.main.name}"
+  location            = "${var.region}"
+  resource_group_name = "${var.resourceGroup}"
 
   ip_configuration {
     name                          = "${var.prefix}-ipconfiguration"
@@ -31,8 +27,8 @@ resource "azurerm_network_interface" "main" {
 }
 resource "azurerm_virtual_machine" "main" {
   name                  = "${var.prefix}-azure-vm"
-  location              = "${azurerm_resource_group.main.location}"
-  resource_group_name   = "${azurerm_resource_group.main.name}"
+  location              = "${var.region}"
+  resource_group_name   = "${var.resourceGroup}"
   network_interface_ids = ["${azurerm_network_interface.main.id}"]
   vm_size               = "${var.vmSize}"
 
@@ -50,7 +46,7 @@ resource "azurerm_virtual_machine" "main" {
     version   = "${var.image_version}"
   }
   storage_os_disk {
-    name              = "${var.prefix}-osdisk"
+    name              = "osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
